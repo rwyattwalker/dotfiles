@@ -44,7 +44,7 @@ return {
         type = 'coreclr',
         name = 'Launch',
         request = 'launch',
-        console = 'integratedTerminal',
+        console = 'externalTerminal',
         program = function()
           if vim.fn.confirm('Should I recompile first?', '&yes\n&no', 2) == 1 then
             vim.g.dotnet_build_project()
@@ -94,44 +94,44 @@ return {
 
     vim.keymap.set('n', '<F5>', function()
       require('dap').continue()
-    end)
+    end, { desc = 'Continue' })
     vim.keymap.set('n', '<F10>', function()
       require('dap').step_over()
-    end)
+    end, { desc = 'Step Over' })
     vim.keymap.set('n', '<F11>', function()
       require('dap').step_into()
-    end)
+    end, { desc = 'Step Into' })
     vim.keymap.set('n', '<F12>', function()
       require('dap').step_out()
-    end)
+    end, { desc = 'Step Out' })
     vim.keymap.set('n', '<Leader>b', function()
       require('dap').toggle_breakpoint()
-    end)
-    vim.keymap.set('n', '<Leader>B', function()
-      require('dap').set_breakpoint()
-    end)
+    end, { desc = 'Toggle Breakpoint' })
+    --    vim.keymap.set('n', '<Leader>B', function()
+    --     require('dap').set_breakpoint()
+    --    end, { desc = 'Set Breakpoint' })
     vim.keymap.set('n', '<Leader>lp', function()
       require('dap').set_breakpoint(nil, nil, vim.fn.input 'Log point message: ')
-    end)
+    end, { desc = 'Log Breakpoint' })
     vim.keymap.set('n', '<Leader>dr', function()
       require('dap').repl.open()
-    end)
+    end, { desc = 'Open Dap Repl' })
     vim.keymap.set('n', '<Leader>dl', function()
       require('dap').run_last()
     end)
     vim.keymap.set({ 'n', 'v' }, '<Leader>dh', function()
       require('dap.ui.widgets').hover()
-    end)
+    end, { desc = 'Dap UI Hover' })
     vim.keymap.set({ 'n', 'v' }, '<Leader>dp', function()
       require('dap.ui.widgets').preview()
-    end)
+    end, { desc = 'Dap UI Preview' })
     vim.keymap.set('n', '<Leader>df', function()
       local widgets = require 'dap.ui.widgets'
       widgets.centered_float(widgets.frames)
-    end)
+    end, { desc = 'Dap UI Frames' })
     vim.keymap.set('n', '<Leader>ds', function()
       local widgets = require 'dap.ui.widgets'
       widgets.centered_float(widgets.scopes)
-    end)
+    end, { desc = 'Dap UI Scopes' })
   end,
 }
