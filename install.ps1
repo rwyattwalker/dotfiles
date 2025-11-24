@@ -14,7 +14,7 @@ $links = @(
         Target = Join-Path $root "nvim\init.lua"
     },
     @{
-        Link = "$HOME\.config\powershell\profile.ps1"
+        Link = $PROFILE
         Target = Join-Path $root "profile.ps1"
     }
 )
