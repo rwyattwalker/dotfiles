@@ -239,6 +239,14 @@ require('lazy').setup({
         --   },
         -- },
         -- pickers = {}
+        defaults = {
+          -- Use "smart" to display relative paths to the current working directory,
+          -- shortening them with a tilde (~) if they are in the home directory.
+          path_display = { 'relative' },
+          -- Alternatively, use "filename_first" to show the filename first,
+          -- followed by the path to the parent directory.
+          -- path_display = { "filename_first" },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
