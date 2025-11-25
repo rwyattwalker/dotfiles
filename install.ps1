@@ -10,55 +10,27 @@ if (-not ([bool]([Security.Principal.WindowsPrincipal] `
 
 $links = @(
     @{
-        Link = "$HOME\AppData\Local\nvim\init.lua"
-        Target = Join-Path $root "nvim\init.lua"
+        Link = "$HOME\AppData\Local\nvim"
+        Target = Join-Path $root "nvim"
     },
     @{
         Link = $PROFILE
-        Target = Join-Path $root "profile.ps1"
+        Target = Join-Path $root "Microsoft.PowerShell_profile.ps1"
     }
 )
 
-# --- Function to create symlink safely ---
-function New-SafeSymlink {
-    param(
-        [string]$Link,
-        [string]$Target
-    )
+foreach ($item in $links) {
+    $parent = Split-Path $item.Link
 
-    Write-Host "`n🔗 Creating link:" -ForegroundColor Cyan
-    Write-Host "Link:    $Link"
-    Write-Host "Target:  $Target"
-
-    # Make sure parent folder exists
-    $parent = Split-Path $Link
     if (-not (Test-Path $parent)) {
-        Write-Host "📁 Creating directory: $parent"
         New-Item -ItemType Directory -Path $parent -Force | Out-Null
     }
 
-    # Remove existing item if needed
-    if (Test-Path $Link) {
-        Write-Host "⚠️ Existing item found. Removing: $Link"
-        Remove-Item -Force -Recurse $Link
+    if (Test-Path $item.Link) {
+        Remove-Item $item.Link -Force
     }
 
-    # Determine type
-    $isDir = (Test-Path $Target -PathType Container)
+    New-Item -ItemType SymbolicLink -Path $item.Link -Target $item.Target -Force | Out-Null
 
-    if ($isDir) {
-        New-Item -ItemType SymbolicLink -Path $Link -Target $Target | Out-Null
-    } else {
-        New-Item -ItemType SymbolicLink -Path $Link -Target $Target | Out-Null
-    }
-
-    Write-Host "✅ Symlink created."
+    Write-Host "Created: $($item.Link) -> $($item.Target)"
 }
-
-# --- Create all links ---
-foreach ($item in $links) {
-    New-SafeSymlink -Link $item.Link -Target $item.Target
-}
-
-Write-Host "`n🎉 Done!"
-
