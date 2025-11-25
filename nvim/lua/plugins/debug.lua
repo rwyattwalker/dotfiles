@@ -54,7 +54,7 @@ return {
               prompt_title = 'Select DLL',
               cwd = vim.fn.getcwd(),
               search_dirs = { 'bin/Debug' }, -- Optional narrowing
-              find_command = { 'fd', '--extension', 'dll' },
+              find_command = { 'fd', '-I', '--extension', 'dll' },
 
               previewer = false,
 
