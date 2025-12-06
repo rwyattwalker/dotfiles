@@ -1,0 +1,50 @@
+{
+  "layer": "top",
+  "position": "bottom",
+  "height": 45,
+  "spacing": 0,
+  "modules-left": [
+    "hyprland/workspaces",
+  ],
+  "modules-center": [
+    "custom/lock",
+    "custom/reboot",
+    "custom/power",
+  ],
+  "hyprland/workspaces": {
+    "disable-scroll": false,
+    "all-outputs": true,
+    "format": "{icon}",
+    "on-click": "activate",
+    "persistent-workspaces": {
+    "*":[1,2,3,4,5,6]
+    },
+    "format-icons":{
+    "1": "󰣇",
+    "2": "",
+    "3": "󰇮",
+    "4": "",
+    "5": "",
+    "6": "",
+    "active": "󱓻"
+    }
+  },
+  "custom/lock": {
+  "format": "  ",
+  "on-click": "hyprlock",
+  "tooltip": false,
+  "tooltip-format": "Lock"
+  },
+  "custom/reboot": {
+    "format": "  ",
+    "on-click": "systemctl reboot",
+    "tooltip": false,
+    "tooltip-format": "Reboot"	
+  },
+  "custom/power": {
+    "format": "  ",
+    "on-click": "systemctl poweroff",
+    "tooltip": false,
+    "tooltip-format": "Shut Down"
+  },
+}

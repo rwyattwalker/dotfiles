@@ -1,0 +1,76 @@
+* {
+  font-family: "Meslo Nerd Font", "Font Awesome 6 Free", "Font Awesome 6 Free Solid";
+  font-size: 14px;
+  border-radius: 0;
+  min-height: 0;
+  border: none;
+  font-weight: bold;
+}
+
+#workspaces{
+  background-color: rgba(24,24,37,1.0);
+  border: none;
+  box-shadow: none;
+}
+#waybar {
+  background-color: #181825;
+  transition-property: background-color;
+  transition-duration: 0.5s;
+}
+#window,
+#custom-power,
+#custom-reboot,
+#custom-lock{
+  border-radius: 4px;
+  margin: 6px 3px;
+  padding: 6px 13px 6px 10px;
+  background-color: rgba(36, 36, 52, 1.0);
+  color: #181825;
+}
+#custom-power{
+  background-color: rgba(36, 36, 52, 1.0);
+  color: #cdd6f4;
+}
+#custom-reboot{
+  background-color: rgba(36, 36, 52, 1.0);
+  color: #cdd6f4;
+}
+#custom-lock{
+  background-color: rgba(36, 36, 52, 1.0);
+  color: #cdd6f4;
+}
+#window{
+  background-color: #74c7ec;
+}
+#waybar.hidden {
+  opacity: 0.5;
+}
+#workspaces button {
+  all: initial;
+  /* Remove GTK theme values (waybar #1351) */
+  min-width: 0;
+  /* Fix weird spacing in materia (waybar #450) */
+  box-shadow: inset 0 -3px transparent;
+  /* Use box-shadow instead of border so the text isn't offset */
+  padding: 6px 21px 6px 18px;
+  margin: 6px 3px;
+  border-radius: 4px;
+  background-color: rgba(36, 36, 52, 1.0);
+  color: #cdd6f4;
+}
+
+#workspaces button.active {
+  color: #1e1e2e;
+  background-color: #cdd6f4;
+}
+
+#workspaces button:hover {
+  box-shadow: inherit;
+  text-shadow: inherit;
+  color: #1e1e2e;
+  background-color: #cdd6f4;
+}
+#custom-lock:hover,#custom-reboot:hover,#custom-power:hover {
+  color: #1e1e2e;
+  background-color: #cdd6f4;
+}
