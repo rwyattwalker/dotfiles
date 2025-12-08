@@ -2,6 +2,4 @@
 EnableRemoteFolderThumbnail=false
 MaximumRemoteSize=0
 [Icons]
-Theme=Tela-circle-blue
-[Colors:View]
-BackgroundNormal=255,255,255
+Theme=Tela-circle
