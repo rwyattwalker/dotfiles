@@ -463,18 +463,14 @@ require('lazy').setup({
       local capabilities = require('blink.cmp').get_lsp_capabilities()
 
       local lspconfig = require("lspconfig")
-      lspconfig.rust_analyzer.setup({
+
+      vim.lsp.config('rust_analyzer',{
         settings = {
-          ["rust-analyzer"] = {
-            cargo = {allFeature = true},
-            procMacro = { enable = true},
-          },
+          ["rust-analyzer"] = {},
         },
       })
-      --vim.lsp.enable('rust_analyzer')
-
-
-          end,
+      vim.lsp.enable('rust_analyzer')
+    end,
   },
     { -- Autoformat
     'stevearc/conform.nvim',
@@ -663,7 +659,6 @@ require('lazy').setup({
   },
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
@@ -682,7 +677,7 @@ require('lazy').setup({
         'rust',
       },
       -- Autoinstall languages that are not installed
-      auto_install = true, --changed to false for working on NixOS
+      auto_install = false, --changed to false for working on NixOS
       highlight = {
         enable = true,
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
