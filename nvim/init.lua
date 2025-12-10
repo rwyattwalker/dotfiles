@@ -462,16 +462,10 @@ require('lazy').setup({
       --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
       local capabilities = require('blink.cmp').get_lsp_capabilities()
 
-      local lspconfig = require("lspconfig")
-      lspconfig.rust_analyzer.setup({
-        settings = {
-          ["rust-analyzer"] = {
-            cargo = {allFeature = true},
-            procMacro = { enable = true},
-          },
-        },
+      vim.lsp.config('rust_analyzer', {
+        cmd = { '/run/current-system/sw/bin/rust-analyzer' },
       })
-      --vim.lsp.enable('rust_analyzer')
+      vim.lsp.enable('rust_analyzer')
 
 
           end,
@@ -491,7 +485,7 @@ require('lazy').setup({
       },
     },
     opts = {
-      notify_on_error = false,
+      notify_on_error = true,
       format_on_save = function(bufnr)
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
