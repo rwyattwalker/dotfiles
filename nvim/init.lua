@@ -462,10 +462,11 @@ require('lazy').setup({
       --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
       local capabilities = require('blink.cmp').get_lsp_capabilities()
 
-      vim.lsp.config('rust_analyzer', {
-        cmd = { '/run/current-system/sw/bin/rust-analyzer' },
-      })
+      --vim.lsp.config('rust_analyzer', {
+      --  cmd = { '/run/current-system/sw/bin/rust-analyzer' },
+      --})
       vim.lsp.enable('rust_analyzer')
+      vim.lsp.enable('nixd')
 
 
           end,
@@ -502,6 +503,7 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        nix = { 'nixfmt' },
         rust = { 'rustfmt', lsp_format = 'fallback' },
         -- Conform will run the first available formatter
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
