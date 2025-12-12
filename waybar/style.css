@@ -6,7 +6,9 @@
   border: none;
   font-weight: bold;
 }
-
+#window{
+  background-color: #74c7ec;
+}
 #waybar {
   background-color: #16161e;
   transition-property: background-color;
@@ -55,32 +57,3 @@
   background-color: #cdd6f4;
 }*/
 
-#window,
-#custom-power,
-#custom-reboot,
-#custom-lock{
-  border-radius: 4px;
-  margin: 6px 3px;
-  padding: 6px 13px 6px 10px;
-  background-color: rgba(36, 36, 52, 1.0);
-  color: #181825;
-}
-#custom-power{
-  background-color: rgba(36, 36, 52, 1.0);
-  color: #cdd6f4;
-}
-#custom-reboot{
-  background-color: rgba(36, 36, 52, 1.0);
-  color: #cdd6f4;
-}
-#custom-lock{
-  background-color: rgba(36, 36, 52, 1.0);
-  color: #cdd6f4;
-}
-#window{
-  background-color: #74c7ec;
-}
-#custom-lock:hover,#custom-reboot:hover,#custom-power:hover {
-  color: #1e1e2e;
-  background-color: #cdd6f4;
-}

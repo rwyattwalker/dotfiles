@@ -6,11 +6,6 @@
   "modules-left": [
     "hyprland/workspaces",
   ],
-  "modules-center": [
-    "custom/lock",
-    "custom/reboot",
-    "custom/power",
-  ],
   "hyprland/workspaces": {
     "disable-scroll": false,
     "all-outputs": true,
@@ -28,22 +23,4 @@
     "active": ""
     }
   },
-  "custom/lock": {
-  "format": "  ",
-  "on-click": "hyprlock",
-  "tooltip": false,
-  "tooltip-format": "Lock"
-  },
-  "custom/reboot": {
-    "format": "  ",
-    "on-click": "systemctl reboot",
-    "tooltip": false,
-    "tooltip-format": "Reboot"	
-  },
-  "custom/power": {
-    "format": "  ",
-    "on-click": "systemctl poweroff",
-    "tooltip": false,
-    "tooltip-format": "Shut Down"
-  },
-}
+  }
