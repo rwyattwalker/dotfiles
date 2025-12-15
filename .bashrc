@@ -3,6 +3,10 @@
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
+bp () {
+     printf "Bat 0: %s \n" "$(cat /sys/class/power_supply/BAT0/capacity)"
+     printf "Bat 1: %s \n" "$(cat /sys/class/power_supply/BAT1/capacity)"
+}
 export PATH="$HOME/.local/bin:$PATH"
 
 #Time & Date Formatting
