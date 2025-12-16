@@ -1,0 +1,14 @@
+.urlbarView-row[selected] {
+background-color: #7aa2f7 !important;
+color: inherit !important;
+}
+*::-moz-selection { 
+background: #333333 !important; /* the background color of the highlight */ 
+/*color: #7aa2f7 !important;*/ /* the color of the text within the highlight */
+}
+
+
+:root[lwtheme] {
+  --focus-outline-color: light-dark(#7aa2f7, #7aa2f7) !important;
+}
+
