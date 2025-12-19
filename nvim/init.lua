@@ -467,6 +467,7 @@ require('lazy').setup({
       --})
       vim.lsp.enable('rust_analyzer')
       vim.lsp.enable('nixd')
+      vim.lsp.enable('pylsp')
 
 
           end,
@@ -509,7 +510,7 @@ require('lazy').setup({
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
 
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { "isort", "black" },
       },
     },
   },
