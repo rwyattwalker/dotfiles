@@ -664,9 +664,9 @@ require('lazy').setup({
     main = 'nvim-treesitter.config', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     config = function()
-    require("nvim-treesitter").setup({
-      install_dir = "~/.tree-sitter-parsers"
-    })
+    require("nvim-treesitter").setup{
+      -- optional config changes here
+    }
     require'nvim-treesitter'.install { 'rust', 'javascript', 'nix' }
     end,
   },
