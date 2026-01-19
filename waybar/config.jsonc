@@ -1,0 +1,26 @@
+{
+  "layer": "top",
+  "position": "bottom",
+  "height": 40,
+  "spacing": 0,
+  "modules-left": [
+    "hyprland/workspaces",
+  ],
+  "hyprland/workspaces": {
+    "disable-scroll": false,
+    "all-outputs": true,
+    "format": "{icon}",
+    "on-click": "activate",
+    "persistent-workspaces": {
+    "*":[1,2,3,4,5]
+    },
+    "format-icons":{
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": "",
+    "active": ""
+    }
+  },
+  }
