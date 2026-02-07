@@ -427,7 +427,7 @@ require('lazy').setup({
         end,
       })
 
-     -- Diagnostic Config
+      -- Diagnostic Config
       -- See :help vim.diagnostic.Opts
       vim.diagnostic.config {
         severity_sort = true,
@@ -465,14 +465,13 @@ require('lazy').setup({
       --vim.lsp.config('rust_analyzer', {
       --  cmd = { '/run/current-system/sw/bin/rust-analyzer' },
       --})
-      vim.lsp.enable('rust_analyzer')
-      vim.lsp.enable('nixd')
-      vim.lsp.enable('pylsp')
-
-
-          end,
+      vim.lsp.enable 'rust_analyzer'
+      vim.lsp.enable 'nixd'
+      vim.lsp.enable 'pylsp'
+      vim.lsp.enable 'ts_ls'
+    end,
   },
-    { -- Autoformat
+  { -- Autoformat
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
@@ -508,9 +507,14 @@ require('lazy').setup({
         rust = { 'rustfmt', lsp_format = 'fallback' },
         -- Conform will run the first available formatter
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        html = { 'prettier' },
+        css = { 'prettier' },
+        xml = { 'prettier' },
+        json = { 'prettier' },
+        markdown = { 'prettier' },
 
         -- Conform can also run multiple formatters sequentially
-        python = { "isort", "black" },
+        python = { 'isort', 'black' },
       },
     },
   },
@@ -664,10 +668,10 @@ require('lazy').setup({
     main = 'nvim-treesitter.config', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     config = function()
-    require("nvim-treesitter").setup({
-      install_dir = "~/.tree-sitter-parsers"
-    })
-    require'nvim-treesitter'.install { 'rust', 'javascript', 'nix' }
+      require('nvim-treesitter').setup {
+        -- optional config changes here
+      }
+      require('nvim-treesitter').install { 'rust', 'javascript', 'nix' }
     end,
   },
   require 'theme',
