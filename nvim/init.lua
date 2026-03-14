@@ -41,6 +41,12 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+vim.keymap.set('n', '<C-`>', function()
+  vim.cmd 'split'
+  vim.cmd 'terminal'
+  vim.cmd 'startinsert'
+end)
+
 -- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
 -- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
 -- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
@@ -177,6 +183,13 @@ require('lazy').setup({
     },
   },
 
+  {
+    'windwp/nvim-autopairs',
+    event = 'InsertEnter',
+    config = true,
+    -- use opts = {} for passing setup options
+    -- this is equivalent to setup({}) function
+  },
   -- NOTE: Plugins can specify dependencies.
   --
   -- The dependencies are proper plugin specifications as well - anything
@@ -671,7 +684,7 @@ require('lazy').setup({
       require('nvim-treesitter').setup {
         -- optional config changes here
       }
-      require('nvim-treesitter').install { 'rust', 'javascript', 'nix' }
+      require('nvim-treesitter').install { 'rust', 'javascript', 'nix', 'lua' }
     end,
   },
   require 'theme',
