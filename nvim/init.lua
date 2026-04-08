@@ -482,6 +482,7 @@ require('lazy').setup({
       vim.lsp.enable 'nixd'
       vim.lsp.enable 'pylsp'
       vim.lsp.enable 'ts_ls'
+      vim.lsp.enable 'clangd'
     end,
   },
   { -- Autoformat
@@ -525,6 +526,7 @@ require('lazy').setup({
         xml = { 'prettier' },
         json = { 'prettier' },
         markdown = { 'prettier' },
+        cpp = { 'clang-format' },
 
         -- Conform can also run multiple formatters sequentially
         python = { 'isort', 'black' },
