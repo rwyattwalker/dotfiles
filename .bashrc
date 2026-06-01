@@ -46,3 +46,5 @@ function bash_prompt() {
 }
 
 bash_prompt
+
+eval "$(direnv hook bash)"

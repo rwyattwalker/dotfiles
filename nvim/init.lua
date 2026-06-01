@@ -41,6 +41,12 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+vim.keymap.set('n', '<C-\\>', function()
+  vim.cmd 'split'
+  vim.cmd 'terminal'
+  vim.cmd 'startinsert'
+end)
+
 -- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
 -- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
 -- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
@@ -177,6 +183,13 @@ require('lazy').setup({
     },
   },
 
+  {
+    'windwp/nvim-autopairs',
+    event = 'InsertEnter',
+    config = true,
+    -- use opts = {} for passing setup options
+    -- this is equivalent to setup({}) function
+  },
   -- NOTE: Plugins can specify dependencies.
   --
   -- The dependencies are proper plugin specifications as well - anything
@@ -427,7 +440,7 @@ require('lazy').setup({
         end,
       })
 
-     -- Diagnostic Config
+      -- Diagnostic Config
       -- See :help vim.diagnostic.Opts
       vim.diagnostic.config {
         severity_sort = true,
@@ -465,14 +478,15 @@ require('lazy').setup({
       --vim.lsp.config('rust_analyzer', {
       --  cmd = { '/run/current-system/sw/bin/rust-analyzer' },
       --})
-      vim.lsp.enable('rust_analyzer')
-      vim.lsp.enable('nixd')
-      vim.lsp.enable('pylsp')
-
-
-          end,
+      vim.lsp.enable 'rust_analyzer'
+      vim.lsp.enable 'nixd'
+      vim.lsp.enable 'pylsp'
+      vim.lsp.enable 'ts_ls'
+      vim.lsp.enable 'clangd'
+      vim.lsp.enable 'csharp_ls'
+    end,
   },
-    { -- Autoformat
+  { -- Autoformat
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
@@ -508,9 +522,16 @@ require('lazy').setup({
         rust = { 'rustfmt', lsp_format = 'fallback' },
         -- Conform will run the first available formatter
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        html = { 'prettier' },
+        css = { 'prettier' },
+        xml = { 'prettier' },
+        json = { 'prettier' },
+        markdown = { 'prettier' },
+        cpp = { 'clang-format' },
+        cs = { 'csharpier' },
 
         -- Conform can also run multiple formatters sequentially
-        python = { "isort", "black" },
+        python = { 'isort', 'black' },
       },
     },
   },
@@ -664,10 +685,10 @@ require('lazy').setup({
     main = 'nvim-treesitter.config', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     config = function()
-    require("nvim-treesitter").setup{
-      -- optional config changes here
-    }
-    require'nvim-treesitter'.install { 'rust', 'javascript', 'nix' }
+      require('nvim-treesitter').setup {
+        -- optional config changes here
+      }
+      require('nvim-treesitter').install { 'rust', 'javascript', 'nix', 'lua', 'csharp' }
     end,
   },
   require 'theme',
