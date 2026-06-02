@@ -1,0 +1,12 @@
+[Icon Theme]
+Name=CustomTelaCircle
+Comment=Tela Circle with custom folder icon
+Inherits=Tela-circle
+Directories=scalable/places
+
+[scalable/places]
+Context=Places
+Size=64
+MinSize=22
+MaxSize=512
+Type=Scalable

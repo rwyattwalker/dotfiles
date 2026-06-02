@@ -5,7 +5,7 @@ TerminalService=kitty.desktop
 EnableRemoteFolderThumbnail=false
 MaximumRemoteSize=0
 [Icons]
-Theme=Tela-circle
+Theme=CustomTelaCircle
 
 [KFileDialog Settings]
 Allow Expansion=false
