@@ -2,7 +2,7 @@
 Name=Tela Circle (Custom)
 Comment=Tela Circle with custom folder icon
 Inherits=Tela-circle
-Directories=16/places,22/places,24/places,32/places,scalable/places
+Directories=scalable/places
 
 
 [scalable/places]
@@ -12,17 +12,3 @@ MinSize=22
 MaxSize=512
 Type=Scalable
 
-[16/places]
-Context=Places
-Size=16
-Type=Fixed
-
-[22/places]
-Context=Places
-Size=22
-Type=Fixed
-
-[24/places]
-Context=Places
-Size=24
-Type=Fixed
