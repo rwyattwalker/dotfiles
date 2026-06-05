@@ -1,0 +1,9 @@
+[credential]
+	helper = store
+[user]
+	email = wyatt@wwalker.me
+	name = wyatt
+[init]
+	defaultBranch = master
+[core]
+	editor = nvim
