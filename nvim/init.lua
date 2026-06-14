@@ -491,6 +491,7 @@ require('lazy').setup({
       vim.lsp.enable 'ts_ls'
       vim.lsp.enable 'clangd'
       vim.lsp.enable 'csharp_ls'
+      vim.lsp.enable 'bashls'
     end,
   },
   { -- Autoformat
@@ -536,6 +537,7 @@ require('lazy').setup({
         markdown = { 'prettier' },
         cpp = { 'clang-format' },
         cs = { 'csharpier' },
+        sh = { 'shfmt' },
 
         -- Conform can also run multiple formatters sequentially
         python = { 'isort', 'black' },
@@ -695,7 +697,7 @@ require('lazy').setup({
       require('nvim-treesitter').setup {
         -- optional config changes here
       }
-      require('nvim-treesitter').install { 'rust', 'javascript', 'nix', 'lua', 'csharp' }
+      require('nvim-treesitter').install { 'rust', 'javascript', 'nix', 'lua', 'csharp', 'bash' }
     end,
   },
   require 'theme',
