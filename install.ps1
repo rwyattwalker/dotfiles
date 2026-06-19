@@ -322,7 +322,8 @@ $packages = @(
     "Bitwarden.Bitwarden",
     "Git.Git",
     "Neovim.Neovim",
-    "JanDeDobbeleer.OhMyPosh"
+    "JanDeDobbeleer.OhMyPosh",
+    "Seafile.Seafile"
 )
 
 foreach ($pkg in $packages) {
