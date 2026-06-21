@@ -370,6 +370,81 @@ function Set-WindowsTerminalSettings {
     Log "Windows Terminal settings installed"
 }
 
+function Ensure-AdwaitaNerdFont {
+    Log "Ensuring AdwaitaMono Nerd Font"
+
+    if ($DryRun) {
+        Log "DryRun: Would install AdwaitaMono Nerd Font through Scoop"
+        return
+    }
+
+    if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
+        Log "Scoop unavailable. Skipping AdwaitaMono Nerd Font install."
+        return
+    }
+
+    $fontAlreadyInstalled = Test-FontInstalled -FontNamePattern "*Adwaita*"
+
+    if ($fontAlreadyInstalled) {
+        Log "AdwaitaMono Nerd Font already installed"
+        return
+    }
+
+    Run "scoop" @("bucket", "add", "nerd-fonts")
+
+    $candidates = @(
+        "AdwaitaMono-NF",
+        "AdwaitaMono-NF-Mono",
+        "AdwaitaMono-Nerd-Font",
+        "AdwaitaMono"
+    )
+
+    foreach ($candidate in $candidates) {
+        try {
+            Log ("Trying font package: {0}" -f $candidate)
+            Run "scoop" @("install", $candidate)
+
+            if (Test-FontInstalled -FontNamePattern "*Adwaita*") {
+                Log ("Installed AdwaitaMono Nerd Font using Scoop package: {0}" -f $candidate)
+                return
+            }
+        }
+        catch {
+            Log ("Font package failed: {0}" -f $candidate)
+        }
+    }
+
+    throw "Could not install AdwaitaMono Nerd Font from Scoop nerd-fonts bucket"
+}
+
+function Test-FontInstalled {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$FontNamePattern
+    )
+
+    $fontRegistryPaths = @(
+        "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts",
+        "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+    )
+
+    foreach ($path in $fontRegistryPaths) {
+        if (-not (Test-Path $path)) {
+            continue
+        }
+
+        $fonts = Get-ItemProperty -Path $path
+
+        foreach ($property in $fonts.PSObject.Properties) {
+            if ($property.Name -like $FontNamePattern -or [string]$property.Value -like $FontNamePattern) {
+                return $true
+            }
+        }
+    }
+
+    return $false
+}
+
 function Test-WingetPackageInstalled {
     param(
         [Parameter(Mandatory = $true)]
@@ -664,21 +739,8 @@ foreach ($link in $links) {
 
 # --- SCOOP + TREE-SITTER ---
 Ensure-Scoop
+Ensure-AdwaitaNerdFont
 Ensure-ScoopPackage -Name "tree-sitter"
-
-# --- OH MY POSH FALLBACK FONT INSTALL ---
-if (Get-Command oh-my-posh -ErrorAction SilentlyContinue) {
-    try {
-        Log "Installing Meslo Nerd Font via Oh My Posh as fallback"
-        Run "oh-my-posh" @("font", "install", "meslo")
-    }
-    catch {
-        Log ("Oh My Posh font install failed: {0}" -f $_)
-    }
-}
-else {
-    Log "oh-my-posh unavailable. Skipping fallback font install."
-}
 
 Configure-Git
 
