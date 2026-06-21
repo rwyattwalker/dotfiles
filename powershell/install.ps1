@@ -4,7 +4,8 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$root = $PSScriptRoot
+$scriptDir = $PSScriptRoot
+$root = Split-Path $scriptDir -Parent
 
 function Log {
     param([string]$Message)
@@ -306,7 +307,7 @@ $links = @(
     },
     @{
         Path = $PROFILE
-        Target = Join-Path $root "Microsoft.PowerShell_profile.ps1"
+        Target = Join-Path $root "powershell\Microsoft.PowerShell_profile.ps1"
     }
 )
 
