@@ -494,6 +494,50 @@ function Ensure-JetBrainsMonoNerdFont {
     Log "JetBrainsMono Nerd Font Mono installation complete"
 }
 
+function Ensure-PowerShellFormatter {
+    Log "Ensuring PowerShell formatter: PSScriptAnalyzer"
+
+    $moduleName = "PSScriptAnalyzer"
+
+    if ($DryRun) {
+        if (Get-Module -ListAvailable -Name $moduleName) {
+            Log "DryRun: PSScriptAnalyzer already installed"
+        }
+        else {
+            Log "DryRun: Would install PSScriptAnalyzer for CurrentUser"
+        }
+
+        return
+    }
+
+    if (Get-Module -ListAvailable -Name $moduleName) {
+        Log "PSScriptAnalyzer already installed"
+        return
+    }
+
+    if (-not (Get-PackageProvider -Name NuGet -ErrorAction SilentlyContinue)) {
+        Log "Installing NuGet package provider"
+        Install-PackageProvider -Name NuGet -Scope CurrentUser -Force | Out-Null
+    }
+
+    $repo = Get-PSRepository -Name PSGallery -ErrorAction SilentlyContinue
+
+    if (-not $repo) {
+        Log "Registering PSGallery"
+        Register-PSRepository -Default
+    }
+
+    Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+
+    Install-Module `
+        -Name $moduleName `
+        -Scope CurrentUser `
+        -Force `
+        -AllowClobber
+
+    Log "PSScriptAnalyzer installed"
+}
+
 function Test-WingetPackageInstalled {
     param(
         [Parameter(Mandatory = $true)]
@@ -763,6 +807,7 @@ foreach ($pkg in $packages) {
 Install-PowerShellTheme
 Ensure-JetBrainsMonoNerdFont
 Set-WindowsTerminalSettings
+Ensure-PowerShellFormatter
 
 # --- SYMLINKS ---
 $documents = [Environment]::GetFolderPath("MyDocuments")
