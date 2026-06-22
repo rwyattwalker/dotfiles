@@ -2,7 +2,7 @@ oh-my-posh init pwsh --config 'https://github.com/JanDeDobbeleer/oh-my-posh/blob
 
 # Invoke fzf and change directory to the target
 # Must have fzf installed - install by running: winget install --id=junegunn.fzf  -e
-  function cdf {
+function cdf {
     $target = rg --files | fzf
 
 
@@ -36,8 +36,14 @@ function Format-PSFile {
         $script += "`r`n"
     }
 
-    $formatted = Invoke-Formatter `
-        -ScriptDefinition $script
+    try {
+        $formatted = Invoke-Formatter -ScriptDefinition $script -ErrorAction Stop
+    }
+    catch {
+        Write-Warning "Invoke-Formatter failed for: $resolvedPath"
+        Write-Warning $_.Exception.Message
+        return
+    }
 
     Set-Content -LiteralPath $resolvedPath -Value $formatted -NoNewline
 }
@@ -49,5 +55,5 @@ function Format-PSFile {
 # See https://ch0.co/tab-completion for details.
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
-  Import-Module "$ChocolateyProfile"
+    Import-Module "$ChocolateyProfile"
 }
