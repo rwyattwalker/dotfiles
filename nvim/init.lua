@@ -541,24 +541,9 @@ require('lazy').setup({
 
         -- Conform can also run multiple formatters sequentially
         python = { 'isort', 'black' },
-        ps1 = { 'psscriptanalyzer' },
       },
-      formatters = {
-        psscriptanalyzer = {
-          command = 'pwsh',
-          args = {
-            '-NoLogo',
-            '-NoProfile',
-            '-Command',
-            [[
-              $input | Invoke-Formatter
-            ]],
-          },
-          stdin = true,
-        },
-      },
-    },
   },
+},
 
   { -- Autocompletion
     'saghen/blink.cmp',

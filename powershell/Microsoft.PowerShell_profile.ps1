@@ -2,8 +2,9 @@ oh-my-posh init pwsh --config 'https://github.com/JanDeDobbeleer/oh-my-posh/blob
 
 # Invoke fzf and change directory to the target
 # Must have fzf installed - install by running: winget install --id=junegunn.fzf  -e
-function cdf {
+  function cdf {
     $target = rg --files | fzf
+
 
     if ($target) {
         Set-Location (Split-Path $target -Parent)
