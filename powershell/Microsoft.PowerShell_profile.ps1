@@ -16,6 +16,32 @@ function Open-InitLua {
     nvim init.lua 
 }
 
+function Format-PSFile {
+    param(
+        [Parameter(Mandatory)]
+        [string]$Path
+    )
+
+    $resolvedPath = Resolve-Path $Path -ErrorAction Stop
+
+    $script = Get-Content -LiteralPath $resolvedPath -Raw -ErrorAction Stop
+
+    if ([string]::IsNullOrWhiteSpace($script)) {
+        Write-Warning "File is empty or only whitespace: $resolvedPath"
+        return
+    }
+
+    # Older PSScriptAnalyzer versions can fail if they can't infer line endings.
+    if (-not ($script.EndsWith("`n"))) {
+        $script += "`r`n"
+    }
+
+    $formatted = Invoke-Formatter `
+        -ScriptDefinition $script
+
+    Set-Content -LiteralPath $resolvedPath -Value $formatted -NoNewline
+}
+
 # Import the Chocolatey Profile that contains the necessary code to enable
 # tab-completions to function for `choco`.
 # Be aware that if you are missing these lines from your profile, tab completion

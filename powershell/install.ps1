@@ -770,15 +770,15 @@ $profileSource = Join-Path $scriptDir "Microsoft.PowerShell_profile.ps1"
 
 $links = @(
     @{
-        Path = Join-Path $HOME "AppData\Local\nvim"
+        Path   = Join-Path $HOME "AppData\Local\nvim"
         Target = Join-Path $root "nvim"
     },
     @{
-        Path = Join-Path $documents "PowerShell\Microsoft.PowerShell_profile.ps1"
+        Path   = Join-Path $documents "PowerShell\Microsoft.PowerShell_profile.ps1"
         Target = $profileSource
     },
     @{
-        Path = Join-Path $documents "WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
+        Path   = Join-Path $documents "WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
         Target = $profileSource
     }
 )
