@@ -1,6 +1,4 @@
-oh-my-posh init pwsh --config 'https://github.com/JanDeDobbeleer/oh-my-posh/blob/main/themes/bubblesline.omp.json' | Invoke-Expression
-#Set-PSReadLineKeyHandler -Key Tab -Function AcceptNextSuggestionWord
-#Set-PSReadLineKeyHandler -Key 'Shift+Tab' -Function MenuComplete
+oh-my-posh init pwsh --config 'https://github.com/JanDeDobbeleer/oh-my-posh/blob/main/themes/bubbles.omp.json' | Invoke-Expression
 
 # Invoke fzf and change directory to the target
 # Must have fzf installed - install by running: winget install --id=junegunn.fzf  -e

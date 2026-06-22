@@ -273,7 +273,15 @@ function Install-UserFontFile {
         New-Item -ItemType Directory -Path $fontsDir -Force | Out-Null
     }
 
-    Copy-Item $Path $target -Force
+    # A release archive can contain the same filename in more than one font
+    # variant directory. Once Windows loads the first copy it can lock that
+    # file, so do not attempt to overwrite an existing user-font file.
+    if (Test-Path $target) {
+        Log ("User font file already present: {0}" -f $fontFileName)
+    }
+    else {
+        Copy-Item $Path $target -Force
+    }
 
     # Register the copied font for the current user. Windows accepts a per-user font registry entry here.
     $fontRegKey = "HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
@@ -288,43 +296,65 @@ function Install-UserFontFile {
     New-ItemProperty -Path $fontRegKey -Name $regName -Value $target -PropertyType String -Force | Out-Null
 }
 
-function Install-LocalFonts {
-    $fontDirs = @(
-        $scriptDir,
-        (Join-Path $scriptDir "fonts")
+function Get-WindowsTerminalSchemeFromKittyConfig {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path
     )
 
-    $fontFiles = @()
+    if (-not (Test-Path $Path)) {
+        throw ("Kitty configuration file does not exist: {0}" -f $Path)
+    }
 
-    foreach ($dir in $fontDirs) {
-        if (Test-Path $dir) {
-            $fontFiles += Get-ChildItem $dir -Filter "*.ttf" -File -ErrorAction SilentlyContinue
-            $fontFiles += Get-ChildItem $dir -Filter "*.otf" -File -ErrorAction SilentlyContinue
+    $contents = Get-Content -Path $Path -Raw
+
+    function Get-Color {
+        param([string]$Name)
+
+        $match = [regex]::Match($contents, ("(?m)^\s*{0}\s+(#[0-9a-fA-F]{{6}})" -f [regex]::Escape($Name)))
+
+        if (-not $match.Success) {
+            throw ("Missing color '{0}' in {1}" -f $Name, $Path)
         }
+
+        return $match.Groups[1].Value
     }
 
-    $fontFiles = $fontFiles | Sort-Object FullName -Unique
-
-    if ($fontFiles.Count -eq 0) {
-        Log "No local font files found."
-        Log "Your Windows Terminal settings use: AdwaitaMono Nerd Font"
-        Log ("Put the AdwaitaMono Nerd Font .ttf/.otf files in {0} or {1}" -f $scriptDir, (Join-Path $scriptDir "fonts"))
-        return
+    return [pscustomobject][ordered]@{
+        name                = "Tokyo Night"
+        background          = Get-Color "background"
+        foreground          = Get-Color "foreground"
+        selectionBackground = Get-Color "selection_background"
+        cursorColor         = Get-Color "cursor"
+        black               = Get-Color "color0"
+        red                 = Get-Color "color1"
+        green               = Get-Color "color2"
+        yellow              = Get-Color "color3"
+        blue                = Get-Color "color4"
+        purple              = Get-Color "color5"
+        cyan                = Get-Color "color6"
+        white               = Get-Color "color7"
+        brightBlack         = Get-Color "color8"
+        brightRed           = Get-Color "color9"
+        brightGreen         = Get-Color "color10"
+        brightYellow        = Get-Color "color11"
+        brightBlue          = Get-Color "color12"
+        brightPurple        = Get-Color "color13"
+        brightCyan          = Get-Color "color14"
+        brightWhite         = Get-Color "color15"
     }
-
-    foreach ($font in $fontFiles) {
-        Install-UserFontFile -Path $font.FullName
-    }
-
-    Log "Local font installation complete"
 }
 
 function Set-WindowsTerminalSettings {
     $source = Join-Path $scriptDir "settings.json"
+    $kittyConfigSource = Join-Path $root "kitty\kitty.conf"
 
     if (-not (Test-Path $source)) {
         throw ("Windows Terminal settings file does not exist: {0}" -f $source)
     }
+
+    # Keep Kitty as the single palette source of truth for both terminals.
+    $terminalScheme = Get-WindowsTerminalSchemeFromKittyConfig -Path $kittyConfigSource
 
     $possibleTargets = @(
         (Join-Path $env:LOCALAPPDATA "Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"),
@@ -352,7 +382,7 @@ function Set-WindowsTerminalSettings {
     Log ("Setting Windows Terminal settings: {0} -> {1}" -f $source, $target)
 
     if ($DryRun) {
-        Log "DryRun: Would copy Windows Terminal settings"
+        Log ("DryRun: Would apply the Windows Terminal palette from {0}" -f $kittyConfigSource)
         return
     }
 
@@ -366,55 +396,22 @@ function Set-WindowsTerminalSettings {
         Log ("Backed up existing Windows Terminal settings: {0}" -f $backup)
     }
 
-    Copy-Item $source $target -Force
-    Log "Windows Terminal settings installed"
-}
+    $settings = Get-Content -Path $source -Raw | ConvertFrom-Json
+    $settings.schemes = @($terminalScheme)
 
-function Ensure-AdwaitaNerdFont {
-    Log "Ensuring AdwaitaMono Nerd Font"
-
-    if ($DryRun) {
-        Log "DryRun: Would install AdwaitaMono Nerd Font through Scoop"
-        return
-    }
-
-    if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
-        Log "Scoop unavailable. Skipping AdwaitaMono Nerd Font install."
-        return
-    }
-
-    $fontAlreadyInstalled = Test-FontInstalled -FontNamePattern "*Adwaita*"
-
-    if ($fontAlreadyInstalled) {
-        Log "AdwaitaMono Nerd Font already installed"
-        return
-    }
-
-    Run "scoop" @("bucket", "add", "nerd-fonts")
-
-    $candidates = @(
-        "AdwaitaMono-NF",
-        "AdwaitaMono-NF-Mono",
-        "AdwaitaMono-Nerd-Font",
-        "AdwaitaMono"
-    )
-
-    foreach ($candidate in $candidates) {
-        try {
-            Log ("Trying font package: {0}" -f $candidate)
-            Run "scoop" @("install", $candidate)
-
-            if (Test-FontInstalled -FontNamePattern "*Adwaita*") {
-                Log ("Installed AdwaitaMono Nerd Font using Scoop package: {0}" -f $candidate)
-                return
+    foreach ($profile in $settings.profiles.list) {
+        if ($profile.name -in @("PowerShell", "Windows PowerShell")) {
+            $profile | Add-Member -NotePropertyName "colorScheme" -NotePropertyValue "Tokyo Night" -Force
+            $profile | Add-Member -NotePropertyName "font" -NotePropertyValue ([pscustomobject]@{ face = "JetBrainsMono Nerd Font Mono" }) -Force
+            if ($profile.PSObject.Properties["lineHeight"]) {
+                $profile.PSObject.Properties.Remove("lineHeight")
             }
-        }
-        catch {
-            Log ("Font package failed: {0}" -f $candidate)
+            $profile | Add-Member -NotePropertyName "padding" -NotePropertyValue "8, 12, 8, 12" -Force
         }
     }
 
-    throw "Could not install AdwaitaMono Nerd Font from Scoop nerd-fonts bucket"
+    $settings | ConvertTo-Json -Depth 20 | Set-Content -Path $target -Encoding utf8
+    Log "Windows Terminal settings installed with the Tokyo Night palette and JetBrainsMono Nerd Font Mono"
 }
 
 function Test-FontInstalled {
@@ -443,6 +440,58 @@ function Test-FontInstalled {
     }
 
     return $false
+}
+
+function Ensure-JetBrainsMonoNerdFont {
+    Log "Ensuring JetBrainsMono Nerd Font Mono"
+
+    if (Test-FontInstalled -FontNamePattern "*JetBrainsMono*Nerd*Font*Mono*") {
+        Log "JetBrainsMono Nerd Font Mono already installed"
+        return
+    }
+
+    if ($DryRun) {
+        Log "DryRun: Would download and install the latest JetBrainsMono Nerd Font Mono release"
+        return
+    }
+
+    $release = Invoke-RestMethod -Uri "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest" -Headers @{ "User-Agent" = "dotfiles-bootstrap" }
+    $asset = $release.assets |
+        Where-Object { $_.name -eq "JetBrainsMono.zip" } |
+        Select-Object -First 1
+
+    if (-not $asset) {
+        throw "The latest Nerd Fonts release does not contain JetBrainsMono.zip"
+    }
+
+    $archive = Join-Path $env:TEMP $asset.name
+    $extractDir = Join-Path $env:TEMP ("JetBrainsMonoNerdFont-{0}" -f [guid]::NewGuid())
+
+    try {
+        Log ("Downloading JetBrainsMono Nerd Font Mono {0}" -f $release.tag_name)
+        Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $archive
+        Expand-Archive -Path $archive -DestinationPath $extractDir -Force
+
+        $fontFiles = Get-ChildItem -Path $extractDir -Recurse -File -Filter "JetBrainsMonoNerdFontMono-*.ttf"
+
+        if ($fontFiles.Count -eq 0) {
+            throw "The JetBrains Mono Nerd Font archive did not contain any Mono TrueType font files"
+        }
+
+        foreach ($font in $fontFiles) {
+            Install-UserFontFile -Path $font.FullName
+        }
+    }
+    finally {
+        Remove-Item -LiteralPath $archive -Force -ErrorAction SilentlyContinue
+        Remove-Item -LiteralPath $extractDir -Recurse -Force -ErrorAction SilentlyContinue
+    }
+
+    if (-not (Test-FontInstalled -FontNamePattern "*JetBrainsMono*Nerd*Font*Mono*")) {
+        throw "JetBrainsMono Nerd Font Mono was copied but Windows did not register it"
+    }
+
+    Log "JetBrainsMono Nerd Font Mono installation complete"
 }
 
 function Test-WingetPackageInstalled {
@@ -695,6 +744,7 @@ Invoke-AdminPhase
 $packages = @(
     "Microsoft.WindowsTerminal",
     "Microsoft.PowerShell",
+    "OpenAI.Codex",
     "WireGuard.WireGuard",
     "Mozilla.Firefox",
     "Valve.Steam",
@@ -711,7 +761,7 @@ foreach ($pkg in $packages) {
 
 # --- POWERSHELL / TERMINAL THEME + FONT ---
 Install-PowerShellTheme
-Install-LocalFonts
+Ensure-JetBrainsMonoNerdFont
 Set-WindowsTerminalSettings
 
 # --- SYMLINKS ---
@@ -739,7 +789,6 @@ foreach ($link in $links) {
 
 # --- SCOOP + TREE-SITTER ---
 Ensure-Scoop
-Ensure-AdwaitaNerdFont
 Ensure-ScoopPackage -Name "tree-sitter"
 
 Configure-Git
