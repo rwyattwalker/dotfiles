@@ -20,6 +20,17 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- quickfix and location navigation
+vim.keymap.set('n', '<leader>qo', vim.cmd.copen, { desc = 'Open quickfix list' })
+vim.keymap.set('n', '<leader>qc', vim.cmd.cclose, { desc = 'Close quickfix list' })
+vim.keymap.set('n', ']q', vim.cmd.cnext, { desc = 'Next quickfix item' })
+vim.keymap.set('n', '[q', vim.cmd.cprev, { desc = 'Previous quickfix item' })
+
+vim.keymap.set('n', '<leader>lo', vim.cmd.lopen, { desc = 'Open location list' })
+vim.keymap.set('n', '<leader>lc', vim.cmd.lclose, { desc = 'Close location list' })
+vim.keymap.set('n', ']l', vim.cmd.lnext, { desc = 'Next location item' })
+vim.keymap.set('n', '[l', vim.cmd.lprev, { desc = 'Previous location item' })
+
 vim.keymap.set('n', '<C-\\>', function()
   vim.cmd 'split'
   vim.cmd 'terminal'
