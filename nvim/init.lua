@@ -480,11 +480,18 @@ require('lazy').setup({
       --  By default, Neovim doesn't support everything that is in the LSP specification.
       --  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
       --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
-      local capabilities = require('blink.cmp').get_lsp_capabilities()
+      --local capabilities = require('blink.cmp').get_lsp_capabilities()
 
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+      capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities())
       --vim.lsp.config('rust_analyzer', {
       --  cmd = { '/run/current-system/sw/bin/rust-analyzer' },
       --})
+      vim.lsp.config('*', {
+        capabilities = capabilities,
+      })
+
       vim.lsp.enable 'rust_analyzer'
       vim.lsp.enable 'nixd'
       vim.lsp.enable 'pylsp'
@@ -542,8 +549,8 @@ require('lazy').setup({
         -- Conform can also run multiple formatters sequentially
         python = { 'isort', 'black' },
       },
+    },
   },
-},
 
   { -- Autocompletion
     'saghen/blink.cmp',

@@ -3,9 +3,9 @@
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-bp () {
-     printf "Bat 0: %s \n" "$(cat /sys/class/power_supply/BAT0/capacity)"
-     printf "Bat 1: %s \n" "$(cat /sys/class/power_supply/BAT1/capacity)"
+bp() {
+    printf "Bat 0: %s \n" "$(cat /sys/class/power_supply/BAT0/capacity)"
+    printf "Bat 1: %s \n" "$(cat /sys/class/power_supply/BAT1/capacity)"
 }
 export PATH="$HOME/.local/bin:$PATH"
 
@@ -46,5 +46,7 @@ function bash_prompt() {
 }
 
 bash_prompt
+
+export AIRPODS_MAX="08:FF:44:14:F8:65"
 
 eval "$(direnv hook bash)"
