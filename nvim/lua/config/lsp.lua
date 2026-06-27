@@ -9,6 +9,34 @@ vim.api.nvim_create_autocmd('LspAttach', {
       })
     end
 
+    vim.keymap.set('n', 'grd', function()
+      vim.lsp.buf.definition { loclist = true }
+    end, { buffer = event.buf, desc = 'Goto definition' })
+
+    vim.keymap.set('n', 'gri', function()
+      vim.lsp.buf.implementation { loclist = true }
+    end, { buffer = event.buf, desc = 'Goto implementation' })
+
+    vim.keymap.set('n', 'grt', function()
+      vim.lsp.buf.type_definition { loclist = true }
+    end, { buffer = event.buf, desc = 'Goto type definition' })
+
+    vim.keymap.set('n', 'grD', function()
+      vim.lsp.buf.declaration { loclist = true }
+    end, { buffer = event.buf, desc = 'Goto declaration' })
+
+    vim.keymap.set('n', 'grr', function()
+      vim.lsp.buf.references(nil, { loclist = true })
+    end, { buffer = event.buf, desc = 'Goto references' })
+
+    vim.keymap.set('n', 'gO', function()
+      vim.lsp.buf.document_symbol { loclist = true }
+    end, { buffer = event.buf, desc = 'Document symbols' })
+
+    vim.keymap.set('n', 'gra', function()
+      vim.lsp.buf.code_action()
+    end, { buffer = event.buf, desc = 'Code action' })
+
     -- These mappings override the default nvim lsp keymaps which use quick fix
 
     -- map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
