@@ -13,9 +13,10 @@ return {
     treesitter.install(parsers)
 
     vim.api.nvim_create_autocmd('FileType', {
-        pattern = { 'rust', 'javascript', 'nix', 'lua', 'c_sharp', 'bash' },
-        callback = function() vim.treesitter.start() end,
+      pattern = { 'rs', 'js', 'nix', 'lua', 'cs', 'sh' },
+      callback = function()
+        vim.treesitter.start()
+      end,
     })
-
   end,
 }
