@@ -131,7 +131,7 @@ vim.lsp.config('csharp_ls', {
     local fname = vim.api.nvim_buf_get_name(bufnr)
 
     local root_file = vim.fs.find(function(name)
-      return name:match '%.sln$' or name:match '%.csproj$' or name == '.git'
+      return name:match '%.sln$' or name:match '%.slnx$' or name:match '%.csproj$' or name == '.git'
     end, {
       path = fname,
       upward = true,
