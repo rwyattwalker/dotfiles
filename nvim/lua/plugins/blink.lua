@@ -14,8 +14,11 @@ return {
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
   opts = {
-    keymap = { preset = 'default' },
-    completion = { documentation = { auto_show = false } },
+    keymap = { preset = 'enter' },
+    completion = {
+      documentation = { auto_show = false },
+      list = { selection = { preselect = false } },
+    },
     sources = { default = { 'lsp', 'path', 'snippets', 'buffer' } },
     fuzzy = { implementation = 'rust' },
   },
