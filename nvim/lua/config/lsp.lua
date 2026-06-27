@@ -123,8 +123,14 @@ vim.lsp.config('clangd', {
   filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
   root_markers = { 'compile_commands.json', 'compile_flags.txt', '.clangd', '.git' },
 })
-vim.lsp.config('csharp_ls', {
-  cmd = { 'csharp-ls' },
+vim.lsp.config('roslyn', {
+  cmd = {
+    'Microsoft.CodeAnalysis.LanguageServer',
+    '--stdio',
+    '--autoLoadProjects',
+    '--logLevel',
+    'Information',
+  },
   filetypes = { 'cs' },
 
   root_dir = function(bufnr, on_dir)
@@ -202,7 +208,7 @@ vim.lsp.enable {
   'pylsp',
   'ts_ls',
   'clangd',
-  'csharp_ls',
+  'roslyn',
   'bashls',
   'lua_ls',
 }
