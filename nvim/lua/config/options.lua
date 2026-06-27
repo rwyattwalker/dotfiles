@@ -65,5 +65,4 @@ vim.o.foldmethod = 'expr'
 vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.o.foldenable = false
 
--- only show one status line
-vim.o.laststatus = 3
+vim.o.laststatus = 2
