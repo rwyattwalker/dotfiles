@@ -1,8 +1,3 @@
--- lua/config/lsp.lua
-
---
--- LSP attach behavior
---
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
   callback = function(event)
@@ -13,7 +8,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
         desc = 'LSP: ' .. desc,
       })
     end
-
     map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
     map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
@@ -95,16 +89,102 @@ vim.diagnostic.config {
   },
 }
 
---
--- Capabilities
---
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities())
-
-vim.lsp.config('*', {
-  capabilities = capabilities,
+vim.lsp.config('rust_analyzer', {
+  cmd = { 'rust-analyzer' },
+  filetypes = { 'rust' },
+  root_markers = { 'Cargo.toml', 'rust-project.json', '.git' },
 })
 
+vim.lsp.config('nixd', {
+  cmd = { 'nixd' },
+  filetypes = { 'nix' },
+  root_markers = { 'flake.nix', 'default.nix', '.git' },
+})
+
+vim.lsp.config('pylsp', {
+  cmd = { 'pylsp' },
+  filetypes = { 'python' },
+  root_markers = { 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', '.git' },
+})
+
+vim.lsp.config('ts_ls', {
+  cmd = { 'typescript-language-server', '--stdio' },
+  filetypes = {
+    'javascript',
+    'javascriptreact',
+    'typescript',
+    'typescriptreact',
+  },
+  root_markers = { 'package.json', 'tsconfig.json', 'jsconfig.json', '.git' },
+})
+
+vim.lsp.config('clangd', {
+  cmd = { 'clangd' },
+  filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
+  root_markers = { 'compile_commands.json', 'compile_flags.txt', '.clangd', '.git' },
+})
+vim.lsp.config('csharp_ls', {
+  cmd = { 'csharp-ls' },
+  filetypes = { 'cs' },
+
+  root_dir = function(bufnr, on_dir)
+    local fname = vim.api.nvim_buf_get_name(bufnr)
+
+    local root_file = vim.fs.find(function(name)
+      return name:match '%.sln$' or name:match '%.csproj$' or name == '.git'
+    end, {
+      path = fname,
+      upward = true,
+    })[1]
+
+    if root_file then
+      on_dir(vim.fs.dirname(root_file))
+    end
+  end,
+})
+--vim.lsp.config('csharp_ls', {
+--      cmd = { 'csharp-ls' },
+--  filetypes = { 'cs' },
+--  root_markers = { '*.sln', '*.csproj', '.git' },
+--})
+
+vim.lsp.config('bashls', {
+  cmd = { 'bash-language-server', 'start' },
+  filetypes = { 'bash', 'sh' },
+  root_markers = { '.git' },
+})
+
+vim.lsp.config('lua_ls', {
+  cmd = { 'lua-language-server' },
+  filetypes = { 'lua' },
+  root_markers = {
+    '.luarc.json',
+    '.luarc.jsonc',
+    '.luacheckrc',
+    '.stylua.toml',
+    'stylua.toml',
+    'selene.toml',
+    'selene.yml',
+    '.git',
+  },
+  settings = {
+    Lua = {
+      runtime = {
+        version = 'LuaJIT',
+      },
+      diagnostics = {
+        globals = { 'vim' },
+      },
+      workspace = {
+        checkThirdParty = false,
+        library = vim.api.nvim_get_runtime_file('', true),
+      },
+      telemetry = {
+        enable = false,
+      },
+    },
+  },
+})
 --
 -- Server-specific overrides, only when needed
 --
@@ -124,4 +204,5 @@ vim.lsp.enable {
   'clangd',
   'csharp_ls',
   'bashls',
+  'lua_ls',
 }
