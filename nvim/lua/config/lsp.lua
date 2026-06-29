@@ -88,6 +88,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }, { bufnr = event.buf })
       end, '[T]oggle Inlay [H]ints')
     end
+
+    vim.defer_fn(function()
+      if vim.api.nvim_buf_is_valid(event.buf) then
+        vim.lsp.diagnostic._refresh(event.buf, client.id)
+      end
+    end, 3000)
   end,
 })
 
@@ -119,6 +125,9 @@ vim.diagnostic.config {
     end,
   },
 }
+
+-- Diagnostic keymaps
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
 vim.lsp.config('rust_analyzer', {
   cmd = { 'rust-analyzer' },
