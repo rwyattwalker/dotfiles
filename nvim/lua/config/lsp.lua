@@ -163,30 +163,32 @@ vim.lsp.config('clangd', {
   filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
   root_markers = { 'compile_commands.json', 'compile_flags.txt', '.clangd', '.git' },
 })
+
+local function roslyn_root_dir(bufnr, on_dir)
+  local cwd = vim.fn.getcwd();
+  local root_dir = vim.fs.root(cwd, function(name)
+    return name:match '%.slnx?$' ~= nil
+  end) or vim.fs.root(cwd, function(name)
+    return name:match '%.csproj$' ~= nil
+  end) or vim.fs.root(cwd, '.git')
+
+  if root_dir then
+    on_dir(root_dir)
+  end
+end
+
 vim.lsp.config('roslyn', {
   cmd = {
-    'Microsoft.CodeAnalysis.LanguageServer',
-    '--stdio',
-    '--autoLoadProjects',
+    'roslyn-language-server',
     '--logLevel',
     'Information',
+    '--extensionLogDirectory',
+    vim.fs.joinpath(vim.uv.os_tmpdir(), 'roslyn_ls', 'logs'),
+    '--stdio',
+    '--autoLoadProjects',
   },
   filetypes = { 'cs' },
-
-  root_dir = function(bufnr, on_dir)
-    local fname = vim.api.nvim_buf_get_name(bufnr)
-
-    local root_file = vim.fs.find(function(name)
-      return name:match '%.sln$' or name:match '%.slnx$' or name:match '%.csproj$' or name == '.git'
-    end, {
-      path = fname,
-      upward = true,
-    })[1]
-
-    if root_file then
-      on_dir(vim.fs.dirname(root_file))
-    end
-  end,
+  root_dir = roslyn_root_dir,
 })
 --vim.lsp.config('csharp_ls', {
 --      cmd = { 'csharp-ls' },
