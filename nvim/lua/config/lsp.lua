@@ -165,7 +165,7 @@ vim.lsp.config('clangd', {
 })
 
 local function roslyn_root_dir(bufnr, on_dir)
-  local cwd = vim.fn.getcwd();
+  local cwd = vim.fn.getcwd()
   local root_dir = vim.fs.root(cwd, function(name)
     return name:match '%.slnx?$' ~= nil
   end) or vim.fs.root(cwd, function(name)
@@ -180,21 +180,12 @@ end
 vim.lsp.config('roslyn', {
   cmd = {
     'roslyn-language-server',
-    '--logLevel',
-    'Information',
-    '--extensionLogDirectory',
-    vim.fs.joinpath(vim.uv.os_tmpdir(), 'roslyn_ls', 'logs'),
     '--stdio',
     '--autoLoadProjects',
   },
   filetypes = { 'cs' },
   root_dir = roslyn_root_dir,
 })
---vim.lsp.config('csharp_ls', {
---      cmd = { 'csharp-ls' },
---  filetypes = { 'cs' },
---  root_markers = { '*.sln', '*.csproj', '.git' },
---})
 
 vim.lsp.config('bashls', {
   cmd = { 'bash-language-server', 'start' },
