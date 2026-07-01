@@ -9,6 +9,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
       })
     end
 
+    -- When LSP attaches to buffer, take over the default hover command
+    vim.keymap.set('n', 'K', '<cmd>Lspsaga hover_doc<CR>', { buffer = event.buf, desc = 'Open documentation in popup window' })
+
+    vim.keymap.set('n', 'grp', '<cmd>Lspsaga peek_definition<CR>', { buffer = event.buf, desc = 'Peek definition' })
+
+    vim.keymap.set('n', 'grP', '<cmd>Lspsaga peek_type_definition<CR>', { buffer = event.buf, desc = 'Peek type definition' })
+
     vim.keymap.set('n', 'grd', function()
       vim.lsp.buf.definition { loclist = true }
     end, { buffer = event.buf, desc = 'Goto definition' })
