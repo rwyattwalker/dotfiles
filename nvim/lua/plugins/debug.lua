@@ -15,30 +15,19 @@ return {
     vim.cmd 'highlight DapBreakpoint guifg=#ff9e64'
     vim.cmd 'highlight DapStopped guifg=#9ece6a' --9ece6a
     vim.cmd 'highlight DapBreakpointRejected guifg=#FFA500'
+
     --  Helper function to build project
     vim.g.dotnet_build_project = function()
-      local default_path = vim.fn.getcwd() .. '\\'
-      if vim.g['dotnet_last_proj_path'] ~= nil then
-        default_path = vim.g['dotnet_last_proj_path']
-      end
-      local path = vim.fn.input('Path to your csproj file ', default_path, 'file')
-      vim.g['dotnet_last_proj_path'] = path
-      local cmd = 'dotnet build -c Debug ' .. path .. '"'
-      print ''
-      print('Cmd to execute: ' .. cmd)
-      local f = os.execute(cmd)
-      if f == 0 then
-        print '\nBuild: ✔️ '
-      else
-        print('\nBuild: ❌ (code: ' .. f .. ')')
-      end
+      local cmd = 'dotnet build -c Debug'
+      os.execute(cmd)
     end
 
     dap.adapters.coreclr = {
       type = 'executable',
-      command = vim.fn.expand '~' .. '/scoop/shims/netcoredbg.exe',
+      command = '/run/current-system/sw/bin/netcoredbg',
       args = { '--interpreter=vscode' },
     }
+
     dap.configurations.cs = {
       {
         type = 'coreclr',
@@ -46,33 +35,25 @@ return {
         request = 'launch',
         console = 'externalTerminal',
         program = function()
-          if vim.fn.confirm('Should I recompile first?', '&yes\n&no', 2) == 1 then
-            vim.g.dotnet_build_project()
-          end
+          vim.g.dotnet_build_project()
           return coroutine.create(function(coro)
             require('telescope.builtin').find_files {
               prompt_title = 'Select DLL',
               cwd = vim.fn.getcwd(),
               search_dirs = { 'bin/Debug' }, -- Optional narrowing
-              find_command = { 'fd', '-I', '--extension', 'dll' },
-
               previewer = false,
-
               attach_mappings = function(prompt_bufnr, map)
                 local actions = require 'telescope.actions'
                 local action_state = require 'telescope.actions.state'
 
-                map('i', '<CR>', function()
+                local get_selection = function()
                   local entry = action_state.get_selected_entry()
                   actions.close(prompt_bufnr)
                   coroutine.resume(coro, entry.path)
-                end)
+                end
 
-                map('n', '<CR>', function()
-                  local entry = action_state.get_selected_entry()
-                  actions.close(prompt_bufnr)
-                  coroutine.resume(coro, entry.path)
-                end)
+                map('i', '<CR>', get_selection)
+                map('n', '<CR>', get_selection)
 
                 return true
               end,
@@ -81,57 +62,69 @@ return {
         end,
       },
     }
-    dapui.setup()
+
+    dapui.setup {
+      layouts = {
+        {
+          elements = {
+            { id = 'scopes', size = 0.5 },
+            { id = 'stacks', size = 0.5 },
+          },
+          size = 40,
+          position = 'left',
+        },
+        {
+          elements = {
+            { id = 'repl', size = 1.0 },
+          },
+          size = 10,
+          position = 'bottom',
+        },
+      },
+    }
+
     dap.listeners.after.event_initialized['dapui_config'] = function()
       dapui.open()
     end
+
     dap.listeners.before.event_terminated['dapui_config'] = function()
       dapui.close()
     end
+
     dap.listeners.before.event_exited['dapui_config'] = function()
       dapui.close()
     end
 
+    --  KEYMAP
     vim.keymap.set('n', '<F5>', function()
       require('dap').continue()
     end, { desc = 'Continue' })
+
+    -- Shift + F5
+    vim.keymap.set('n', '<F17>', function()
+      require('dap').terminate()
+    end, { desc = 'Terminate Debugging Session' })
+
     vim.keymap.set('n', '<F10>', function()
       require('dap').step_over()
     end, { desc = 'Step Over' })
+
     vim.keymap.set('n', '<F11>', function()
       require('dap').step_into()
     end, { desc = 'Step Into' })
-    vim.keymap.set('n', '<F12>', function()
+
+    -- Shift + F11
+    vim.keymap.set('n', '<F23>', function()
       require('dap').step_out()
     end, { desc = 'Step Out' })
+
     vim.keymap.set('n', '<Leader>b', function()
       require('dap').toggle_breakpoint()
     end, { desc = 'Toggle Breakpoint' })
-    --    vim.keymap.set('n', '<Leader>B', function()
-    --     require('dap').set_breakpoint()
-    --    end, { desc = 'Set Breakpoint' })
-    vim.keymap.set('n', '<Leader>lp', function()
-      require('dap').set_breakpoint(nil, nil, vim.fn.input 'Log point message: ')
-    end, { desc = 'Log Breakpoint' })
-    vim.keymap.set('n', '<Leader>dr', function()
-      require('dap').repl.open()
-    end, { desc = 'Open Dap Repl' })
+
+    -- Ctrl - F5
     vim.keymap.set('n', '<Leader>dl', function()
       require('dap').run_last()
-    end)
-    vim.keymap.set({ 'n', 'v' }, '<Leader>dh', function()
-      require('dap.ui.widgets').hover()
-    end, { desc = 'Dap UI Hover' })
-    vim.keymap.set({ 'n', 'v' }, '<Leader>dp', function()
-      require('dap.ui.widgets').preview()
-    end, { desc = 'Dap UI Preview' })
-    vim.keymap.set('n', '<Leader>df', function()
-      local widgets = require 'dap.ui.widgets'
-      widgets.centered_float(widgets.frames)
-    end, { desc = 'Dap UI Frames' })
-    vim.keymap.set('n', '<Leader>ds', function()
-      local widgets = require 'dap.ui.widgets'
-      widgets.centered_float(widgets.scopes)
-    end, { desc = 'Dap UI Scopes' })
+    end, { desc = 'Run Last Debug Configuration' })
   end,
 }
