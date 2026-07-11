@@ -7,6 +7,7 @@ return {
   config = function()
     local dap = require 'dap'
     local dapui = require 'dapui'
+    local netcoredbg = vim.fn.exepath 'netcoredbg'
 
     vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' }) --●
     vim.fn.sign_define('DapStopped', { text = '', texthl = 'DapStopped', linehl = '', numhl = '' })
@@ -24,7 +25,7 @@ return {
 
     dap.adapters.coreclr = {
       type = 'executable',
-      command = '/run/current-system/sw/bin/netcoredbg',
+      command = netcoredbg,
       args = { '--interpreter=vscode' },
     }
 
