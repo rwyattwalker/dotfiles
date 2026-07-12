@@ -42,7 +42,7 @@ return {
               prompt_title = 'Select DLL',
               cwd = vim.fn.getcwd(),
               search_dirs = { 'bin/Debug' }, -- Optional narrowing
-              find_command = { 'rg', '--files', '-g', '*.dll' },
+              find_command = { 'rg', '--files', '-u', '-g', '*.dll' },
               previewer = false,
               attach_mappings = function(prompt_bufnr, map)
                 local actions = require 'telescope.actions'
