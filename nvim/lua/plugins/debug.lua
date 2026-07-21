@@ -27,6 +27,9 @@ return {
       type = 'executable',
       command = netcoredbg,
       args = { '--interpreter=vscode' },
+      options = {
+        detached = false,
+      },
     }
 
     dap.configurations.cs = {
@@ -34,15 +37,15 @@ return {
         type = 'coreclr',
         name = 'Launch',
         request = 'launch',
-        console = 'externalTerminal',
+        console = 'internalConsole',
+        externalConsole = false,
         program = function()
           vim.g.dotnet_build_project()
           return coroutine.create(function(coro)
             require('telescope.builtin').find_files {
               prompt_title = 'Select DLL',
               cwd = vim.fn.getcwd(),
-              search_dirs = { 'bin/Debug' }, -- Optional narrowing
-              find_command = { 'rg', '--files', '-u', '-g', '*.dll' },
+              find_command = { 'rg', '--files', '-u', '-g', '**/bin/Debug/*/*.dll', '-g', '!**/obj/**' },
               previewer = false,
               attach_mappings = function(prompt_bufnr, map)
                 local actions = require 'telescope.actions'
@@ -89,21 +92,24 @@ return {
       dapui.open()
     end
 
-    dap.listeners.before.event_terminated['dapui_config'] = function()
-      dapui.close()
-    end
+     dap.listeners.before.event_terminated['dapui_config'] = function()
+       dapui.close()
+     end
 
-    dap.listeners.before.event_exited['dapui_config'] = function()
-      dapui.close()
-    end
+     dap.listeners.before.event_exited['dapui_config'] = function()
+       dapui.close()
+     end
 
-    --  KEYMAP
+    -- --  KEYMAP
     vim.keymap.set('n', '<F5>', function()
       require('dap').continue()
     end, { desc = 'Continue' })
 
     -- Shift + F5
     vim.keymap.set('n', '<F17>', function()
+      require('dap').terminate()
+    end, { desc = 'Terminate Debugging Session' })
+    vim.keymap.set('n', '<S-F5>', function()
       require('dap').terminate()
     end, { desc = 'Terminate Debugging Session' })
 
@@ -119,6 +125,10 @@ return {
     vim.keymap.set('n', '<F23>', function()
       require('dap').step_out()
     end, { desc = 'Step Out' })
+    vim.keymap.set('n', '<S-F11>', function()
+      require('dap').step_out()
+    end, { desc = 'Step Out' })
+
 
     vim.keymap.set('n', '<Leader>b', function()
       require('dap').toggle_breakpoint()

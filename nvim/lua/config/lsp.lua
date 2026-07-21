@@ -32,9 +32,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.lsp.buf.declaration { loclist = true }
     end, { buffer = event.buf, desc = 'Goto declaration' })
 
-    vim.keymap.set('n', 'grr', function()
-      vim.lsp.buf.references(nil, { loclist = true })
-    end, { buffer = event.buf, desc = 'Goto references' })
+    -- vim.keymap.set('n', 'grr', function()
+    -- vim.lsp.buf.references(nil, { loclist = true })
+    -- end, { buffer = event.buf, desc = 'Goto references' })
 
     vim.keymap.set('n', 'gO', function()
       vim.lsp.buf.document_symbol { loclist = true }
@@ -49,7 +49,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
     -- map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
-    --  map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+    map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
     --  map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
     --  map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
     --  map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
