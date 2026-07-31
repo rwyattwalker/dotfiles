@@ -1,0 +1,178 @@
+/*
+ * Rofi configuration with Tokyo Night colors.
+ * Palette source: color-scheme.md
+ */
+
+configuration {
+    timeout {
+        action: "kb-cancel";
+        delay:  0;
+    }
+
+    filebrowser {
+        directories-first: true;
+        sorting-method:    "name";
+    }
+
+    show-icons: true;
+}
+
+/* Tokyo Night palette */
+* {
+    background:          #1a1b26;
+    background-dark:     #16161e;
+    background-darker:   #0c0e14;
+    surface:             #292e42;
+    surface-selected:    #283457;
+
+    foreground:          #c0caf5;
+    foreground-muted:    #545c7e;
+
+    accent:              #7aa2f7;
+    cyan:                #7dcfff;
+    green:               #9ece6a;
+    orange:              #e0af68;
+    pink:                #f7768e;
+    lavender:            #bb9af7;
+    red:                 #db4b4b;
+
+    background-color:    transparent;
+    text-color:          @foreground;
+    font:                "mono 12";
+}
+
+window {
+    width:                640px;
+    border:               2px;
+    border-color:         @accent;
+    border-radius:        10px;
+    background-color:     @background;
+    padding:              12px;
+}
+
+mainbox {
+    background-color:     transparent;
+    spacing:              10px;
+    children:             [ inputbar, message, listview ];
+}
+
+inputbar {
+    background-color:     @background-dark;
+    border:               1px;
+    border-color:         @surface;
+    border-radius:        7px;
+    padding:              10px 12px;
+    spacing:              10px;
+    children:             [ prompt, entry ];
+}
+
+prompt {
+    background-color:     transparent;
+    text-color:           @accent;
+}
+
+entry {
+    background-color:     transparent;
+    text-color:           @foreground;
+    placeholder:          "Search";
+    placeholder-color:    @foreground-muted;
+}
+
+message {
+    background-color:     @background-dark;
+    border-radius:        7px;
+    padding:              8px 10px;
+}
+
+textbox {
+    background-color:     transparent;
+    text-color:           @foreground;
+}
+
+listview {
+    background-color:     transparent;
+    columns:              1;
+    lines:                8;
+    spacing:              4px;
+    scrollbar:            true;
+    fixed-height:         false;
+}
+
+element {
+    background-color:     transparent;
+    text-color:           @foreground;
+    border-radius:        7px;
+    padding:              8px 10px;
+    spacing:              10px;
+}
+
+element normal.normal,
+element alternate.normal {
+    background-color:     transparent;
+    text-color:           @foreground;
+}
+
+element selected.normal {
+    background-color:     @surface-selected;
+    text-color:           @foreground;
+    border:               1px;
+    border-color:         @accent;
+}
+
+element normal.urgent,
+element alternate.urgent {
+    text-color:           @pink;
+}
+
+element selected.urgent {
+    background-color:     @pink;
+    text-color:           @background-dark;
+}
+
+element normal.active,
+element alternate.active {
+    text-color:           @green;
+}
+
+element selected.active {
+    background-color:     @green;
+    text-color:           @background-dark;
+}
+
+element-icon {
+    size: 28px;
+    background-color: transparent;
+}
+
+
+element-text {
+    background-color:     transparent;
+    text-color:           inherit;
+    vertical-align:       0.5;
+}
+
+scrollbar {
+    width:                6px;
+    border:               0;
+    handle-width:         6px;
+    handle-color:         @accent;
+    background-color:     @surface;
+    border-radius:        6px;
+}
+
+mode-switcher {
+    background-color:     transparent;
+    spacing:              4px;
+}
+
+button {
+    background-color:     @surface;
+    text-color:           @foreground-muted;
+    border-radius:        7px;
+    padding:              6px 10px;
+}
+
+button selected {
+    background-color:     @accent;
+    text-color:           @background-dark;
+}
