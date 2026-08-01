@@ -154,6 +154,22 @@ vim.lsp.config('pylsp', {
   root_markers = { 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', '.git' },
 })
 
+vim.lsp.config('jdtls', {
+  cmd = { 'jdtls' },
+  filetypes = { 'java' },
+  root_markers = {
+    '.git',
+    'mvnw',
+    'gradlew',
+    'pom.xml',
+    'build.gradle',
+    'build.gradle.kts',
+    'settings.gradle',
+    'settings.gradle.kts',
+  },
+})
+
+
 vim.lsp.config('ts_ls', {
   cmd = { 'typescript-language-server', '--stdio' },
   filetypes = {
@@ -251,4 +267,5 @@ vim.lsp.enable {
   'roslyn',
   'bashls',
   'lua_ls',
+  'jdtls',
 }
