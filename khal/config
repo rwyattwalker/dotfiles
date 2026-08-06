@@ -17,10 +17,6 @@ color = yellow
 default_calendar = personal
 
 [locale]
-timeformat = "%I:%M %p"
-dateformat = "%Y-%m-%d"
-longdateformat = "%A, %B %d, %Y"
-datetimeformat = "%Y-%m-%d %I:%M %p"
-longdatetimeformat = "%A, %B %d, %Y %I:%M %p"
-firstweekday = 0
-
+timeformat = %H:%M
+datetimeformat = %d.%m. %H:%M
+longdatetimeformat = %A %d %B %Y %H:%M
