@@ -1,0 +1,19 @@
+[general]
+status_path = "~/.local/share/vdirsyncer/status/"
+
+[pair fastmail]
+a = "fastmail_remote"
+b = "fastmail_local"
+collections = ["from a", "from b"]
+conflict_resolution = "a wins"
+
+[storage fastmail_remote]
+type = "caldav"
+url = "https://caldav.fastmail.com/"
+username = "wyatt@wwalker.me"
+password.fetch = ["command", "cat", "/home/wyatt/.config/vdirsyncer/fastmail-app-password"]
+
+[storage fastmail_local]
+type = "filesystem"
+path = "~/.local/share/calendars/"
+fileext = ".ics"

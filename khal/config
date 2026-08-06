@@ -1,0 +1,22 @@
+[calendars]
+
+[[personal]]
+path = ~/.local/share/calendars/48D163DC-D097-11F0-B18F-A5328F890694/
+color = dark green
+
+[[holidays]]
+path = ~/.local/share/calendars/A442ED98-D13D-11F0-8A26-E96CA807501F/
+readonly = true
+color = dark red
+
+[default]
+default_calendar = personal
+
+[locale]
+timeformat = "%I:%M %p"
+dateformat = "%Y-%m-%d"
+longdateformat = "%A, %B %d, %Y"
+datetimeformat = "%Y-%m-%d %I:%M %p"
+longdatetimeformat = "%A, %B %d, %Y %I:%M %p"
+firstweekday = 0
+

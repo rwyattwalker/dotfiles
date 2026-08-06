@@ -7,6 +7,9 @@ IconSize=48
 IconSize=48
 
 [General]
+CloseSplitViewChoice=RightView
+RememberOpenedTabs=false
+ShowFullPathInTitlebar=true
 ShowStatusBar=Disabled
 Version=202
 ViewPropsTimestamp=2025,12,5,16,20,21.24
@@ -25,7 +28,7 @@ Places Icons Static Size=22
 MenuBar=Disabled
 
 [PreviewSettings]
-Plugins=appimagethumbnail,audiothumbnail,comicbookthumbnail,cursorthumbnail,djvuthumbnail,ebookthumbnail,exrthumbnail,directorythumbnail,imagethumbnail,jpegthumbnail,kraorathumbnail,windowsexethumbnail,windowsimagethumbnail,opendocumentthumbnail,svgthumbnail
+Plugins=appimagethumbnail,audiothumbnail,comicbookthumbnail,cursorthumbnail,djvuthumbnail,ebookthumbnail,exrthumbnail,imagethumbnail,jpegthumbnail,kraorathumbnail,windowsexethumbnail,windowsimagethumbnail,opendocumentthumbnail,svgthumbnail
 
 [UiSettings]
 ColorScheme=BreezeDark
