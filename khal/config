@@ -4,10 +4,14 @@
 path = ~/.local/share/calendars/48D163DC-D097-11F0-B18F-A5328F890694/
 color = dark green
 
+[[anniversaries]]
+path = ~/.local/share/calendars/b853fda1-4200-4725-8270-23d1283c4f03/
+color = dark red
+
 [[holidays]]
 path = ~/.local/share/calendars/A442ED98-D13D-11F0-8A26-E96CA807501F/
 readonly = true
-color = dark red
+color = yellow
 
 [default]
 default_calendar = personal
