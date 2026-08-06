@@ -16,30 +16,30 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     vim.keymap.set('n', 'grP', '<cmd>Lspsaga peek_type_definition<CR>', { buffer = event.buf, desc = 'Peek type definition' })
 
-    vim.keymap.set('n', 'grd', function()
-      vim.lsp.buf.definition { loclist = true }
-    end, { buffer = event.buf, desc = 'Goto definition' })
-
-    vim.keymap.set('n', 'gri', function()
-      vim.lsp.buf.implementation { loclist = true }
-    end, { buffer = event.buf, desc = 'Goto implementation' })
-
-    vim.keymap.set('n', 'grt', function()
-      vim.lsp.buf.type_definition { loclist = true }
-    end, { buffer = event.buf, desc = 'Goto type definition' })
-
-    vim.keymap.set('n', 'grD', function()
-      vim.lsp.buf.declaration { loclist = true }
-    end, { buffer = event.buf, desc = 'Goto declaration' })
-
+    -- vim.keymap.set('n', 'grd', function()
+    --   vim.lsp.buf.definition { loclist = true }
+    -- end, { buffer = event.buf, desc = 'Goto definition' })
+    --
+    -- vim.keymap.set('n', 'gri', function()
+    --   vim.lsp.buf.implementation { loclist = true }
+    -- end, { buffer = event.buf, desc = 'Goto implementation' })
+    --
+    -- vim.keymap.set('n', 'grt', function()
+    --   vim.lsp.buf.type_definition { loclist = true }
+    -- end, { buffer = event.buf, desc = 'Goto type definition' })
+    --
+    -- vim.keymap.set('n', 'grD', function()
+    --   vim.lsp.buf.declaration { loclist = true }
+    -- end, { buffer = event.buf, desc = 'Goto declaration' })
+    --
     -- vim.keymap.set('n', 'grr', function()
     -- vim.lsp.buf.references(nil, { loclist = true })
     -- end, { buffer = event.buf, desc = 'Goto references' })
 
-    vim.keymap.set('n', 'gO', function()
-      vim.lsp.buf.document_symbol { loclist = true }
-    end, { buffer = event.buf, desc = 'Document symbols' })
-
+    -- vim.keymap.set('n', 'gO', function()
+    --   vim.lsp.buf.document_symbol { loclist = true }
+    -- end, { buffer = event.buf, desc = 'Document symbols' })
+    --
     vim.keymap.set('n', 'gra', function()
       vim.lsp.buf.code_action()
     end, { buffer = event.buf, desc = 'Code action' })
@@ -50,13 +50,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
     map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-    --  map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-    --  map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-    --  map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+     map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+     map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+     map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
-    --  map('gO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
-    --  map('gW', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Open Workspace Symbols')
-    --  map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
+     map('gO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
+     map('gW', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Open Workspace Symbols')
+     map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
 
     local client = vim.lsp.get_client_by_id(event.data.client_id)
     if not client then
