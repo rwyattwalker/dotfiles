@@ -1,0 +1,27 @@
+{
+  "displayPicture": "~/.pfp.png",
+  "clockFormat": "hh:mm",
+  "pillTopMargin": 5,
+  "pillBottomMargin": 35,
+  "textFontFamily": "JetBrainsMono Nerd Font",
+  "nerdFontFamily": "JetBrainsMono Nerd Font",
+  "timerPresets": [1, 5, 10, 15, 30],
+  "mediaPopupDuration": 2000,
+  "maxWorkspaces": 5,
+  "notificationDisplayTime": 3000,
+  "maxNotificationsInStack": 20,
+  "bandwidthRefreshInterval": 300000,
+  "screenLockAppCommand": "hyprlock",
+  "osdDuration": 800,
+  "weatherLocation": "Delhi",
+  "weatherUnits": "metric",
+  "weatherRefreshInterval": 3600000,
+  "avoidDuplicateNotifications": true,
+  "defaultTerminal": "kitty",
+  "pillScale": 1.1,
+  "wallpapersDir": "~/Pictures/Wallpapers",
+  "wsCloseOnWallpaperSet": true,
+  "pillModules": {
+      "networking": false
+  }
+}
