@@ -27,6 +27,9 @@ return {
       sh = { 'shfmt' },
       typescript = { 'prettier' },
       typescriptreact = { 'prettier' },
+      c = { 'clang_format' },
+      cpp = { 'clang_format' },
+      qml = { 'qmlformat' },
     },
   },
   config = function(_, opts)
