@@ -1,5 +1,5 @@
 {
-  "displayPicture": "~/.pfp.png",
+  "displayPicture": "~/.pfp.jpg",
   "clockFormat": "hh:mm",
   "pillTopMargin": 5,
   "pillBottomMargin": 35,
@@ -13,8 +13,8 @@
   "bandwidthRefreshInterval": 300000,
   "screenLockAppCommand": "hyprlock",
   "osdDuration": 800,
-  "weatherLocation": "Delhi",
-  "weatherUnits": "metric",
+  "weatherLocation": "Tulsa",
+  "weatherUnits": "imperial",
   "weatherRefreshInterval": 3600000,
   "avoidDuplicateNotifications": true,
   "defaultTerminal": "kitty",
