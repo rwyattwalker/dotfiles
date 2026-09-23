@@ -39,6 +39,30 @@ return {
         request = 'launch',
         console = 'internalConsole',
         externalConsole = false,
+        cwd = function()
+          return coroutine.create(function(coro)
+            require('telescope.builtin').find_files {
+              prompt_title = 'Select Startup Directory',
+              find_command = { 'fd', '--type', 'd' },
+              previewer = false,
+              attach_mappings = function(prompt_bufnr, map)
+                local actions = require 'telescope.actions'
+                local action_state = require 'telescope.actions.state'
+
+                local get_selection = function()
+                  local entry = action_state.get_selected_entry()
+                  actions.close(prompt_bufnr)
+                  coroutine.resume(coro,entry.path)
+                end
+
+                map('i', '<CR>', get_selection)
+                map('n', '<CR>', get_selection)
+
+                return true
+              end,
+            }
+          end)
+        end,
         program = function()
           vim.g.dotnet_build_project()
           return coroutine.create(function(coro)
