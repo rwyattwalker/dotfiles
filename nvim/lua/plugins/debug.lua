@@ -70,10 +70,10 @@ return {
           end)
         end,
         program = function()
+          vim.g.dotnet_build_project()
           if dll then
             return dll
           end
-          vim.g.dotnet_build_project()
           return coroutine.create(function(coro)
             require('telescope.builtin').find_files {
               prompt_title = 'Select DLL',
