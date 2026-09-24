@@ -8,6 +8,8 @@ return {
     local dap = require 'dap'
     local dapui = require 'dapui'
     local netcoredbg = vim.fn.exepath 'netcoredbg'
+    local project_directory
+    local dll
 
     vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' }) --●
     vim.fn.sign_define('DapStopped', { text = '', texthl = 'DapStopped', linehl = '', numhl = '' })
@@ -40,6 +42,9 @@ return {
         console = 'internalConsole',
         externalConsole = false,
         cwd = function()
+          if project_directory then
+            return project_directory
+          end
           return coroutine.create(function(coro)
             require('telescope.builtin').find_files {
               prompt_title = 'Select Startup Directory',
@@ -51,6 +56,7 @@ return {
 
                 local get_selection = function()
                   local entry = action_state.get_selected_entry()
+                  project_directory = entry.path
                   actions.close(prompt_bufnr)
                   coroutine.resume(coro,entry.path)
                 end
@@ -64,6 +70,9 @@ return {
           end)
         end,
         program = function()
+          if dll then
+            return dll
+          end
           vim.g.dotnet_build_project()
           return coroutine.create(function(coro)
             require('telescope.builtin').find_files {
@@ -77,6 +86,7 @@ return {
 
                 local get_selection = function()
                   local entry = action_state.get_selected_entry()
+                  dll = entry.path
                   actions.close(prompt_bufnr)
                   coroutine.resume(coro, entry.path)
                 end
