@@ -8,6 +8,8 @@ return {
     local dap = require 'dap'
     local dapui = require 'dapui'
     local netcoredbg = vim.fn.exepath 'netcoredbg'
+    local project_directory
+    local dll
 
     vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' }) --●
     vim.fn.sign_define('DapStopped', { text = '', texthl = 'DapStopped', linehl = '', numhl = '' })
@@ -39,8 +41,39 @@ return {
         request = 'launch',
         console = 'internalConsole',
         externalConsole = false,
+        cwd = function()
+          if project_directory then
+            return project_directory
+          end
+          return coroutine.create(function(coro)
+            require('telescope.builtin').find_files {
+              prompt_title = 'Select Startup Directory',
+              find_command = { 'fd', '--type', 'd' },
+              previewer = false,
+              attach_mappings = function(prompt_bufnr, map)
+                local actions = require 'telescope.actions'
+                local action_state = require 'telescope.actions.state'
+
+                local get_selection = function()
+                  local entry = action_state.get_selected_entry()
+                  project_directory = entry.path
+                  actions.close(prompt_bufnr)
+                  coroutine.resume(coro,entry.path)
+                end
+
+                map('i', '<CR>', get_selection)
+                map('n', '<CR>', get_selection)
+
+                return true
+              end,
+            }
+          end)
+        end,
         program = function()
           vim.g.dotnet_build_project()
+          if dll then
+            return dll
+          end
           return coroutine.create(function(coro)
             require('telescope.builtin').find_files {
               prompt_title = 'Select DLL',
@@ -53,6 +86,7 @@ return {
 
                 local get_selection = function()
                   local entry = action_state.get_selected_entry()
+                  dll = entry.path
                   actions.close(prompt_bufnr)
                   coroutine.resume(coro, entry.path)
                 end
