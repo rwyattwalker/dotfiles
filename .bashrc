@@ -30,8 +30,8 @@ lav="\[\e[38;2;187;154;247m\]"
 #born="\[\e[38;2;250;186;74m\]"
 #bblu="\[\e[38;2;141;176;255m\]"
 
-export LS_COLORS="$LS_COLORS:di=38;5;111:ln=38;5;183:ex=38;5;121:*.tar=38;5;180:bd=38;5;215:cd=38;5;111:so=38;5;159:pi=38;5;215:ow=38;5;111:tw=38;5;111:st=38;5;111"
-
+#export LS_COLORS="$LS_COLORS:di=38;5;111:ln=38;5;183:ex=38;5;121:*.tar=38;5;180:bd=38;5;215:cd=38;5;111:so=38;5;159:pi=38;5;215:ow=38;5;111:tw=38;5;111:st=38;5;111"
+export LS_COLORS="$LS_COLORS:di=38;5;111:ln=38;5;183:ex=38;5;121:*.tar=38;5;180:bd=38;5;215:cd=38;5;111:so=38;5;159:pi=38;5;215:ow=38;5;215:tw=38;5;215:st=38;5;183"
 # Display current Git branch in the Bash prompt
 function git_branch() {
     if git rev-parse --is-inside-work-tree &>/dev/null; then
