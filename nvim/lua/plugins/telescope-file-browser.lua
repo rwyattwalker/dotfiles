@@ -1,8 +1,22 @@
 return {
   'nvim-telescope/telescope-file-browser.nvim',
-  dependencies = { 'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim' },
+  dependencies = {
+    'nvim-telescope/telescope.nvim',
+    'nvim-lua/plenary.nvim',
+  },
   config = function()
-    vim.keymap.set('n', '\\', ':Telescope file_browser<CR>')
+    local telescope = require 'telescope'
+
+    telescope.load_extension 'file_browser'
+
+    vim.keymap.set('n', '\\', function()
+      telescope.extensions.file_browser.file_browser {
+        add_dirs = true,
+        depth = 1,
+        respect_gitignore = false,
+        file_ignore_patterns = {},
+      }
+    end)
   end,
 }
 
