@@ -66,3 +66,5 @@ vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.o.foldenable = false
 
 vim.o.laststatus = 2
+
+vim.opt.clipboard = 'unnamedplus'
